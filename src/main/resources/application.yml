@@ -1,0 +1,50 @@
+# 公共配置文件
+spring:
+  application:
+    name: dome-test
+  # 默认 dev 环境
+  profiles:
+    active: dev
+  # 支持 swagger3
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dome-web
+    username: root
+    password: hewei135790
+  redis:
+    host: 192.168.68.132
+    port: 6379
+    password: hewei135790
+    lettuce:
+      pool:
+        max-active: 8  #最大连接
+        max-idle: 8   #最大空闲连接
+        min-idle: 0   #最小空闲连接
+        max-wait: 100ms #连接等待时间
+server:
+  address: 0.0.0.0
+  port: 8108
+  servlet:
+    context-path: /api
+    # cookie 30 天过期
+    session:
+      cookie:
+        max-age: 259200000
+        path: /api
+async:
+  executor:
+    thread:
+      corePoolSize: 5
+      maxPoolSize: 20
+      queueCapacity: 1000
+      keepAlive: 300
+      prefix: public-executor-async
+
+
+logging:
+  config: "classpath:log4j2-local.xml"
+  level:
+    com.zaxxer.hikari.pool.HikariPool: debug

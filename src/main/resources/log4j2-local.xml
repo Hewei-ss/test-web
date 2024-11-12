@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--<Configuration xmlns="http://logging.apache.org/log4j/2.0/config">-->
+<Configuration>
+    <Properties>
+        <Property name="LOG_HOME">/home/logs/xeslog</Property>
+        <Property name="JSON_PATTERN">%highlight{{"timestamp":"%d{yyyy/MM/dd HH:mm:ss.SSS}","level":"%-5level","traceId_spanId":"%X{traceId}:%X{spanId}","cost":"%X{cost}","method":"%c{1}.%M():@%L","msg":"%replace{%replace{%msg}{[\r\n]+}{}}{\"}{}"}%n}{FATAL=Bright Red, ERROR=Bright Magenta, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White}</Property>
+        <Property name="CONSOLE_PATTERN">%highlight{[%d{yyyy/MM/dd HH:mm:ss.SSS}][%-5level][%X{traceId}:%X{spanId}][%c{1}.%M():@%L] - %msg%n}{FATAL=Bright Red, ERROR=Bright Magenta, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White}
+        </Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${JSON_PATTERN}"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hew.demotest.mapper.EmpMapper">
+
+    <resultMap id="BaseResultMap" type="com.hew.demotest.model.entity.Emp">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="age" column="age" jdbcType="INTEGER"/>
+        <result property="createtime" column="createTime" jdbcType="TIMESTAMP"/>
+        <result property="updatetime" column="updateTime" jdbcType="TIMESTAMP"/>
+        <result property="isdelete" column="isDelete" jdbcType="TINYINT"/>
+        <association property="dept" javaType="com.hew.demotest.model.entity.Dept">
+            <id property="id" column="id"></id>
+            <result property="deptname" column="deptName"></result>
+            <result property="empid" column="id"></result>
+        </association>
+    </resultMap>
+
+
+
+
+    <sql id="Base_Column_List">
+        id
+        ,name,age,
+        createTime,updateTime,isDelete
+    </sql>
+
+    <select id="testTowParams" resultType="com.hew.demotest.model.entity.Emp">
+        select *
+        from emp
+        where name = #{name}
+          and age = #{age}
+    </select>
+
+
+    <select id="testOneParam" resultType="map" parameterType="string">
+        select *
+        from emp
+        where name = #{name}
+    </select>
+    <select id="testGuanlian" resultMap="BaseResultMap">
+        select *
+        from emp
+                 left join dept on emp.id = dept.id
+        where emp.id = #{id}
+    </select>
+
+    <delete id="deleteMoreByArray">
+        delete from emp where id in
+        <foreach collection="eids" item="eid" separator="," open="(" close=")">
+            #{eid}
+        </foreach>
+    </delete>
+
+
+</mapper>
