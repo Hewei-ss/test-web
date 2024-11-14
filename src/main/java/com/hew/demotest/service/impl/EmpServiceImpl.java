@@ -7,7 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -52,18 +55,39 @@ public class EmpServiceImpl extends ServiceImpl<EmpMapper,Emp>
 
     @Resource
     public EmpMapper empMapper;
+    ArrayList<Emp> list;
+
+    @PostConstruct
+    private void init() {
+        list = new ArrayList<>();
+        Emp emp = new Emp();
+        emp.setAge(2);
+        emp.setName("jlc");
+        Emp emp1 = new Emp();
+        emp1.setAge(3);
+        emp1.setName("jlc");
+        list.add(emp1);
+        list.add(emp);
+        log.info("init data :{}",list.size());
+    }
 
 
-    @Resource
-    private AsyncTaskExecutor asyncTaskExecutor;
-    public String addEmp(Emp emp){
-//        asyncTaskExecutor.execute(()->{
-//            empMapper.insert(emp);
-//        });
-        if (executor.getQueue().size()>0){
+    @PreDestroy
 
+    public void SafeSave() {
+
+        for(Emp t:list){
+            empMapper.insert(t);
         }
-        executor.execute(new Task(emp));
+        log.info("安全重启 :{}",list.size());
+
+
+    }
+
+//    @Resource
+//    private AsyncTaskExecutor asyncTaskExecutor;
+    public String addEmp(Emp emp){
+      //  executor.execute(new Task(emp));
        return "ok";
     }
 }

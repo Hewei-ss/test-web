@@ -26,7 +26,7 @@ spring:
         max-wait: 100ms #连接等待时间
 server:
   address: 0.0.0.0
-  port: 8108
+  port: 8109
   servlet:
     context-path: /api
     # cookie 30 天过期
